@@ -1,25 +1,7 @@
-# Project Summary: Multimodal Cyberbullying Detection
+# Project notes
 
-Built an end-to-end ML pipeline that combines NLP-derived text features with user interaction network features to classify cyberbullying content.
+Demo pipeline combining text features (TF-IDF + abuse/positive lexicon density) with reply-graph stats (out-degree, pair frequency, neighbor count). Logistic regression in NumPy only.
 
-## Key Work
+**Why two cyberbullying folders:** Kaggle tweet data has no author→target edges, so graph features don't apply there. This repo uses a tiny synthetic CSV where reply pairs exist, mainly to show the feature engineering pattern.
 
-- Preprocessed social media text using normalization, tokenization, stop-word removal, and lexical cleanup.
-- Extracted TF-IDF features to capture discriminative words and phrases associated with harmful language.
-- Added lightweight word embedding-style signals using abusive and positive language density, average token length, and message length.
-- Engineered interaction-network features from author-target relationships, including out-degree, in-degree, repeated pair frequency, and neighborhood size.
-- Combined text and graph features into one model-ready feature matrix.
-- Trained a binary logistic regression classifier and evaluated accuracy, precision, recall, F1, and confusion counts.
-- Reported feature weights to make the model behavior easier to inspect.
-
-## Resume Version
-
-Multimodal Cyberbullying Detection (NLP + Network Features)
-
-- Built an ML pipeline combining text-based features including TF-IDF and embedding-style lexical signals with user interaction network features.
-- Applied NLP preprocessing such as tokenization, stop-word removal, and text normalization using Python.
-- Engineered linguistic and interaction-context features to improve cyberbullying classification performance and model interpretability.
-
-## Tech Stack
-
-Python, pandas, NumPy, NLP preprocessing, TF-IDF, graph feature engineering, logistic regression.
+**What I'd say in an interview:** walked through preprocessing, leakage-safe train/test split, interpretable weights, and why I'd want real graph data before claiming "multimodal" in production.

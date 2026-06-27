@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
-Multimodal Cyberbullying Detection: NLP + Interaction Network Features.
+Cyberbullying detection demo — text + interaction features, NumPy logistic regression.
 
-This script is intentionally self-contained. It builds TF-IDF features, simple
-lexicon-based word embedding features, graph interaction features, and trains a
-binary logistic regression classifier with NumPy.
+Self-contained script: TF-IDF, lexicon density features, reply-graph stats,
+then binary logistic regression trained with plain NumPy (no sklearn).
 """
 
 from __future__ import annotations
@@ -271,7 +270,7 @@ def make_features_transform(df: pd.DataFrame, artifacts: FeatureArtifacts) -> np
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Train a multimodal cyberbullying detector.")
+    parser = argparse.ArgumentParser(description="Train cyberbullying detector on labeled posts.")
     parser.add_argument("--data", default="sample_cyberbullying_data.csv",
                         help="CSV with post_id,user_id,target_user_id,text,label")
     parser.add_argument("--top-n", type=int, default=12,
@@ -317,8 +316,8 @@ def main() -> None:
     train_m = metrics(y_train, train_probs)
     test_m = metrics(y_test, test_probs)
 
-    print("Multimodal Cyberbullying Detection")
-    print("=" * 39)
+    print("Cyberbullying Detection (demo pipeline)")
+    print("=" * 40)
     print(
         f"Rows: {len(df)} | Train: {len(df_train)} | Test: {len(df_test)} | "
         f"TF-IDF vocab: {len(artifacts.vocabulary)} | Features: {len(artifacts.feature_names)}"
@@ -330,6 +329,8 @@ def main() -> None:
     for key in ["accuracy", "precision", "recall", "f1"]:
         print(f"  {key:9s}: {test_m[key]:.3f}")
     print(f"  confusion : TP={test_m['tp']} TN={test_m['tn']} FP={test_m['fp']} FN={test_m['fn']}")
+    if len(df_test) < 10:
+        print("  note      : tiny test set — metrics look optimistic on 24-row synthetic data")
 
     print(f"\nStrongest positive cyberbullying signals (top {args.top_n})")
     ranked = sorted(zip(artifacts.feature_names, weights), key=lambda x: x[1], reverse=True)
